@@ -2,8 +2,8 @@
 This is take home from stripe that is currently in progress. 
 
 ## Know Issues 
-* Original tutorials mentioned MongoDB but it is really hard '
-
+* Original tutorials mentioned MongoDB but it is really hard to get it to work and preseed with data so I kind of abandoned it :/ 
+* I'm following this tutorial https://www.youtube.com/watch?v=Fy9SdZLBTOo
 
 ## Next Steps
 * Build a few extra steps in the checkout experience. 
@@ -14,7 +14,6 @@ This is take home from stripe that is currently in progress.
 
 * Create a friction log
 
-
 ## Stripe's Evaluation Criteria
 *Evaluation Criteria*
 * Your program is able to easily run through the test (https://stripe.com/docs/payments/accept-a-payment#web-test-integration) cases on Stripe.com.
@@ -22,9 +21,6 @@ This is take home from stripe that is currently in progress.
 * README on your app (please provide instructions for the reviewer of how they should set up and test your implementation -- assume your reviewer has no experience in the language / framework that you choose).
 * Again, we are not evaluating the design of your website.
 * And lastly, a reminder that the friction-log is even more important than the integration. We look forward to reading more of your feedback on the integration experience (again, with a focus on the PaymentIntents integration) and any thoughts you have on the product design.
-
-\
-
 
 ## Run Locally
 
