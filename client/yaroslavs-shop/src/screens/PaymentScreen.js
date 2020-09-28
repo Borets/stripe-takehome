@@ -45,8 +45,9 @@ function PaymentScreen(props) {
   };
 
   const clientsecret = async () => {
-    const payintent = await fetchPaymentIntent(orderData).clientSecret
+    const payintent = await fetchPaymentIntent(orderData)
     console.log(payintent);
+    return payintent
   }
 
   const handleSubmit = async (event) => {
@@ -54,14 +55,17 @@ function PaymentScreen(props) {
     // which would refresh the page.
     event.preventDefault();
 
+    console.log("existing early");
+
     if (!stripe || !elements) {
+
+      console.log("existing early");
       // Stripe.js has not yet loaded.
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
-
-    
-    const result = await stripe.confirmCardPayment(clientsecret(), {
+    console.log("things are fine");
+    const result = await stripe.confirmCardPayment(await clientsecret(), {
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
@@ -86,12 +90,11 @@ function PaymentScreen(props) {
   };
 
 
-  
   return (
-    <form onSubmit={handleSubmit} >
+    <form onSubmit={handleSubmit}>
       Card details
       <CardElement options={CARD_ELEMENT_OPTIONS} />
-      <button disabled={!stripe}>Pay</button>
+      <button type="submit">Submit</button>
     </form>
   );
 
