@@ -3,9 +3,11 @@ import {BrowserRouter, Route, Link} from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
 import './App.css';
 
-
+const stripePromise = loadStripe('pk_test_QWyqYoftE0qNtrsi62EozHql');
 
 function App() {
 
@@ -42,6 +44,9 @@ function App() {
                     <li>
                         <a href="index.html">Not Pins</a>
                     </li>
+                    <li>
+                      
+                    </li>
                 </ul>
             </aside>
             <main className="main">
@@ -55,7 +60,9 @@ function App() {
           All Rights Reserved
       </footer>
     </div>
+    
     </BrowserRouter>
+    
   );
 }
 

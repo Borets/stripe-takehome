@@ -46,4 +46,3 @@ $ cd client/yaroslavs-shop/
 $ npm install
 $ npm start
 ```
-

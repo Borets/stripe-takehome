@@ -5,9 +5,9 @@ export default {
         name: 'Pin #1', 
         image: '/images/d1.png',
         category: 'pins',
-        price:12, 
-        brand: 'Nike',
-        rating:4.5,
+        price: 12, 
+        brand: 'Hotdog pins',
+        rating: 4.5,
         numReviews: 10, 
         countInStock: 6,
 
@@ -18,10 +18,10 @@ export default {
         image: '/images/d2.png',
         category: 'pins',
         price:12, 
-        brand: 'Nike',
+        brand: 'Hotdog pins',
         rating:4.5,
         numReviews: 10,
-        countInStock: 0,
+        countInStock: 2,
 
     },
     {
@@ -29,9 +29,9 @@ export default {
         name: 'Pin #3', 
         image: '/images/d3.png',
         category: 'pins',
-        price:12, 
-        brand: 'Nike',
-        rating:4.5,
+        price: 12, 
+        brand: 'Hotdog pins',
+        rating: 4.5,
         numReviews: 10,
         countInStock: 2,
     }]
