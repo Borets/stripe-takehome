@@ -33,6 +33,7 @@ function PaymentScreen(props) {
   };
 
   const fetchPaymentIntent = async ({ orderData }) => {
+    
     return fetch('/create-payment-intent', {
       method: 'POST',
       headers: {
@@ -40,7 +41,13 @@ function PaymentScreen(props) {
       },
       body: JSON.stringify({orderData}),
     }).then((res) => res.json());
+    
   };
+
+  const clientsecret = async () => {
+    const payintent = await fetchPaymentIntent(orderData).clientSecret
+    console.log(payintent);
+  }
 
   const handleSubmit = async (event) => {
     // We don't want to let default form submission happen here,
@@ -53,7 +60,8 @@ function PaymentScreen(props) {
       return;
     }
 
-    const result = await stripe.confirmCardPayment(fetchPaymentIntent(orderData).clientSecret, {
+    
+    const result = await stripe.confirmCardPayment(clientsecret(), {
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
