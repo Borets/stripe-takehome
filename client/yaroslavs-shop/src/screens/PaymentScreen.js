@@ -47,7 +47,7 @@ function PaymentScreen(props) {
   const clientsecret = async () => {
     const payintent = await fetchPaymentIntent(orderData)
     console.log(payintent);
-    return payintent
+    return payintent.clientSecret
   }
 
   const handleSubmit = async (event) => {
@@ -85,6 +85,7 @@ function PaymentScreen(props) {
         // execution. Set up a webhook or plugin to listen for the
         // payment_intent.succeeded event that handles any business critical
         // post-payment actions.
+        props.history.push("/success");
       }
     }
   };
