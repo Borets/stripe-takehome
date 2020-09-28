@@ -2,17 +2,17 @@
 This is take home from stripe that is currently in progress. 
 
 ## Know Issues 
-* Original tutorials mentioned MongoDB but it is really hard to get it to work and preseed with data so I kind of abandoned it :/ 
+* Payment Screen is not working at all
 * I'm following this tutorial https://www.youtube.com/watch?v=Fy9SdZLBTOo
 
 ## Next Steps
-* Build a few extra steps in the checkout experience. 
-    * Collect Shipping Information 
-    * Evaluate if I need to connect a Real DB
-
-* Connect Stripe + fulfill their requirements
-
-* Create a friction log
+* Build a few extra steps in the checkout experience and complete Stripe's assignment. 
+    [] Fix the reason as to why I'm not able to create a payment intel on the server and pass secret succesfully to the client
+    [] Expand the payment form to capture user personal details (first, last name, shipping address) as well as card details
+    [] Make sure that my payment form accounts for edge cases and is able to redirect to failures, success states. 
+    [] Store all of the succesfull order details in a log file somewhere
+    [] Make sure the form is able to pass the tests on Stripes Doc
+    [] Create the friction log
 
 ## Stripe's Evaluation Criteria
 *Evaluation Criteria*
