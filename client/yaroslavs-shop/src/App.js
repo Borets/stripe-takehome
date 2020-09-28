@@ -1,6 +1,7 @@
 import React from 'react';
 import {BrowserRouter, Route, Link} from 'react-router-dom';
 import HomeScreen from './screens/HomeScreen';
+import PaymentScreen from './screens/PaymentScreen';
 import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
 import {Elements} from '@stripe/react-stripe-js';
@@ -20,6 +21,7 @@ function App() {
   }
 
   return (
+    <Elements stripe={stripePromise}>
     <BrowserRouter>
     <div className="grid-container">
         <header className="header">
@@ -54,6 +56,7 @@ function App() {
                   <Route path="/" exact={true} component={HomeScreen} /> 
                   <Route path="/cart/:id?" component={CartScreen} />
                   <Route path="/product/:id" component={ProductScreen} />
+                  <Route path="/details" component={PaymentScreen} />
                 </div>
             </main>
       <footer className="footer">
@@ -62,7 +65,7 @@ function App() {
     </div>
     
     </BrowserRouter>
-    
+    </Elements>
   );
 }
 

@@ -1,13 +1,41 @@
 import express from 'express'; 
 import data from './data'; 
 import dotenv from 'dotenv';
+
+
 const { resolve } = require('path');
+
+const app = express(); 
 
 const dotvalues = dotenv.config('./.env');
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-const app = express(); 
+
+const calculateOrderAmount = items => {
+  // Replace this constant with a calculation of the order's amount
+  // Calculate the order total on the server to prevent
+  // people from directly manipulating the amount on the client
+  return 1400;
+};
+
+
+app.post("/create-payment-intent", async (req, res) => {
+  // const { items, currency } = req.body;
+  // Create a PaymentIntent with the order amount and currency
+  const paymentIntent = await stripe.paymentIntents.create({
+    amount: calculateOrderAmount(),
+    currency: 'usd',
+    metadata: {integration_check: 'accept_a_payment'},
+  });
+
+  // Send publishable key and PaymentIntent details to client
+  res.send({
+    publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+    clientSecret: paymentIntent.client_secret
+  });
+});
+
 
 app.get("/api/products/:id", (req, res) => {
     const productId = req.params.id;
@@ -22,6 +50,10 @@ app.get("/api/products", (req, res) => {
     res.send(data.products);
 })
 
+app.get('/secret', async (req, res) => {
+  const intent = paymentIntent; 
+  res.json({client_secret: intent.client_secret});
+});
 
 app.get('/config', async (req, res) => {
   const price = await stripe.prices.retrieve(process.env.PRICE);
@@ -79,43 +111,6 @@ app.post('/create-checkout-session', async (req, res) => {
     sessionId: session.id,
   });
 });
-
-app.post('/webhook', async (req, res) => {
-  let data;
-  let eventType;
-  // Check if webhook signing is configured.
-  if (process.env.STRIPE_WEBHOOK_SECRET) {
-    // Retrieve the event by verifying the signature using the raw body and secret.
-    let event;
-    let signature = req.headers['stripe-signature'];
-
-    try {
-      event = stripe.webhooks.constructEvent(
-        req.rawBody,
-        signature,
-        process.env.STRIPE_WEBHOOK_SECRET
-      );
-    } catch (err) {
-      console.log(`⚠️  Webhook signature verification failed.`);
-      return res.sendStatus(400);
-    }
-    // Extract the object from the event.
-    data = event.data;
-    eventType = event.type;
-  } else {
-    // Webhook signing is recommended, but if the secret is not configured in `config.js`,
-    // retrieve the event data directly from the request body.
-    data = req.body.data;
-    eventType = req.body.type;
-  }
-
-  if (eventType === 'checkout.session.completed') {
-    console.log(`🔔  Payment received!`);
-  }
-
-  res.sendStatus(200);
-});
-
 
 
 app.listen(5000, () => {console.log("Server started at http://localhost:5000")} )

@@ -1,139 +1,92 @@
-import React, { useEffect, useReducer } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
+import React, { useEffect, useReducer } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import {useStripe, useElements, CardElement} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
 
-const fetchCheckoutSession = async ({ quantity }) => {
-  return fetch('/create-checkout-session', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
+function PaymentScreen(props) {
+  const stripe = useStripe();
+  const elements = useElements();
+
+
+  const CARD_ELEMENT_OPTIONS = {
+    style: {
+      base: {
+        color: "#32325d",
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        "::placeholder": {
+          color: "#aab7c4",
+        },
+      },
+      invalid: {
+        color: "#fa755a",
+        iconColor: "#fa755a",
+      },
     },
-    body: JSON.stringify({
-      quantity,
-    }),
-  }).then((res) => res.json());
-};
+  };
 
-const formatPrice = ({ amount, currency, quantity }) => {
-  const numberFormat = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency,
-    currencyDisplay: 'symbol',
-  });
-  const parts = numberFormat.formatToParts(amount);
-  let zeroDecimalCurrency = true;
-  for (let part of parts) {
-    if (part.type === 'decimal') {
-      zeroDecimalCurrency = false;
+  var orderData = {
+    amount: 1099, 
+    currency: "usd"
+  };
+
+  const fetchPaymentIntent = async ({ orderData }) => {
+    return fetch('/create-payment-intent', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({orderData}),
+    }).then((res) => res.json());
+  };
+
+  const handleSubmit = async (event) => {
+    // We don't want to let default form submission happen here,
+    // which would refresh the page.
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js has not yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return;
     }
-  }
-  amount = zeroDecimalCurrency ? amount : amount / 100;
-  const total = (quantity * amount).toFixed(2);
-  return numberFormat.format(total);
-};
 
-
-const Checkout = () => {
-  const [state, dispatch] = useReducer(reducer, {
-    quantity: 1,
-    price: null,
-    loading: false,
-    error: null,
-    stripe: null,
-  });
-
-  useEffect(() => {
-    async function fetchConfig() {
-      // Fetch config from our backend.
-      const { publicKey, unitAmount, currency } = await fetch(
-        '/config'
-      ).then((res) => res.json());
-      // Make sure to call `loadStripe` outside of a component’s render to avoid
-      // recreating the `Stripe` object on every render.
-      dispatch({
-        type: 'useEffectUpdate',
-        payload: { unitAmount, currency, stripe: await loadStripe(publicKey) },
-      });
-    }
-    fetchConfig();
-  }, []);
-
-  const handleClick = async (event) => {
-    // Call your backend to create the Checkout session.
-    dispatch({ type: 'setLoading', payload: { loading: true } });
-    const { sessionId } = await fetchCheckoutSession({
-      quantity: state.quantity,
+    const result = await stripe.confirmCardPayment(fetchPaymentIntent(orderData).clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement),
+        billing_details: {
+          name: 'Jenny Rosen',
+        },
+      }
     });
-    // When the customer clicks on the button, redirect them to Checkout.
-    const { error } = await state.stripe.redirectToCheckout({
-      sessionId,
-    });
-    // If `redirectToCheckout` fails due to a browser or network
-    // error, display the localized error message to your customer
-    // using `error.message`.
-    if (error) {
-      dispatch({ type: 'setError', payload: { error } });
-      dispatch({ type: 'setLoading', payload: { loading: false } });
+
+    if (result.error) {
+      // Show error to your customer (e.g., insufficient funds)
+      console.log(result.error.message);
+    } else {
+      // The payment has been processed!
+      if (result.paymentIntent.status === 'succeeded') {
+        // Show a success message to your customer
+        // There's a risk of the customer closing the window before callback
+        // execution. Set up a webhook or plugin to listen for the
+        // payment_intent.succeeded event that handles any business critical
+        // post-payment actions.
+      }
     }
   };
 
-  return (
-    <div className="sr-root">
-      <div className="sr-main">
-        <header className="sr-header">
-          <div className="sr-header__logo"></div>
-        </header>
-        <section className="container">
-          <div>
-            <h1>Single photo</h1>
-            <h4>Purchase a Pasha original photo</h4>
-            <div className="pasha-image">
-              <img
-                alt="Random asset from Picsum"
-                src="https://picsum.photos/280/320?random=4"
-                width="140"
-                height="160"
-              />
-            </div>
-          </div>
-          <div className="quantity-setter">
-            <button
-              className="increment-btn"
-              disabled={state.quantity === 1}
-              onClick={() => dispatch({ type: 'decrement' })}
-            >
-              -
-            </button>
-            <input
-              type="number"
-              id="quantity-input"
-              min="1"
-              max="10"
-              value={state.quantity}
-              readOnly
-            />
-            <button
-              className="increment-btn"
-              disabled={state.quantity === 10}
-              onClick={() => dispatch({ type: 'increment' })}
-            >
-              +
-            </button>
-          </div>
-          <p className="sr-legal-text">Number of copies (max 10)</p>
-          <button
-            role="link"
-            onClick={handleClick}
-            disabled={!state.stripe || state.loading}
-          >
-            {state.loading || !state.price
-              ? `Loading...`
-              : `Buy for ${state.price}`}
-          </button>
-          <div className="sr-field-error">{state.error?.message}</div>
-        </section>
-      </div>
-    </div>
-  );
-};
 
-export default Checkout;
+  
+  return (
+    <form onSubmit={handleSubmit} >
+      Card details
+      <CardElement options={CARD_ELEMENT_OPTIONS} />
+      <button disabled={!stripe}>Pay</button>
+    </form>
+  );
+
+}
+
+export default PaymentScreen; 
