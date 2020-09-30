@@ -6,6 +6,9 @@ body{
   font: 1.6rem Helvetica;
   height: 100vh;
   margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+  Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+
 }
 
 button{
@@ -46,6 +49,11 @@ button{
 .header-links a{
   color: #ffffff;
   text-decoration: none;
+  font-size: 2rem;
+  padding-right: 1rem;
+  text-transform: uppercase;
+
+  
 }
 
 .header-links a:hover{
@@ -281,7 +289,7 @@ a:hover{
 .StripeElement {
   height: 20px;
   padding: 10px 12px;
-  width: 50%;
+  width: 94%;
   color: #32325d;
   background-color: white;
   border: 1px solid transparent;
@@ -302,4 +310,218 @@ a:hover{
 
 .StripeElement--webkit-autofill {
   background-color: #fefde5 !important;
+}
+
+/* Payment Screen */ 
+label {
+  color: #6b7c93;
+  font-weight: 300;
+  letter-spacing: 0.025em;
+}
+
+div.payment
+{
+  
+  max-width: 480px;
+  margin: 10% auto;
+  padding:  30px 30px;
+  border-radius: 4px;
+  align-items: center;
+  background: #f8fbfd;
+  border: 1px solid #e8e8fb;
+
+}
+
+h2 {
+  margin: 15px 0;
+  color: #32325d;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+fieldset {
+  margin-bottom: 20px;
+  background: #fff;
+  box-shadow: 0 1px 3px 0 rgba(50, 50, 93, 0.15),
+    0 4px 6px 0 rgba(112, 157, 199, 0.15);
+  border-radius: 4px;
+  border: none;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  line-height: 1.4em;
+  color: #525f7f;
+}
+
+fieldset label {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  height: 20px;
+  padding: 10px 0;
+  align-items: center;
+  color: #8898aa;
+  font-weight: 400;
+}
+
+fieldset label:not(:last-child) {
+  border-bottom: 1px solid #f0f5fa;
+}
+/* 
+fieldset label.state {
+  display: inline-flex;
+  width: 75%;
+} */
+
+
+fieldset label.zip {
+  display: inline-flex;
+  width: 25%;
+  padding-right: 60px;
+}
+fieldset label.country {
+  display: inline-flex;
+  width: 25%;
+  padding-right: 60px;
+}
+
+fieldset label span {
+  min-width: 125px;
+  padding: 0 15px;
+  text-align: right;
+}
+
+fieldset .redirect label span {
+  width: 100%;
+  text-align: center;
+}
+
+p.instruction {
+  display: inline-table;
+  margin-top: -32px;
+  padding: 0 5px;
+  text-align: center;
+  background: #f8fbfd;
+}
+
+p.tip {
+  margin: -10px auto 10px;
+  padding: 5px 0 5px 30px;
+  font-size: 14px;
+  background: url(/images/tip.svg) left center no-repeat;
+}
+
+span#generate {
+  cursor: pointer;
+  color: #525f7f;
+  text-decoration: underline;
+}
+span#generate:hover {
+  text-decoration: none;
+}
+
+.field {
+  flex: 1;
+  padding: 0 15px;
+  background: transparent;
+  font-weight: 400;
+  color: #31325f;
+  outline: none;
+  cursor: text;
+}
+
+.field::-webkit-input-placeholder {
+  color: #aab7c4;
+}
+.field::-moz-placeholder {
+  color: #aab7c4;
+}
+.field:-ms-input-placeholder {
+  color: #aab7c4;
+}
+
+fieldset .select::after {
+  content: '';
+  position: absolute;
+  width: 9px;
+  height: 5px;
+  right: 20px;
+  top: 50%;
+  margin-top: -2px;
+  background-image: url(/images/dropdown.svg);
+  pointer-events: none;
+}
+
+input {
+  flex: 1;
+  border-style: none;
+  outline: none;
+  color: #313b3f;
+}
+
+select:focus {
+  color: #666ee8;
+}
+
+::-webkit-input-placeholder {
+  color: #cfd7e0;
+}
+::-moz-placeholder {
+  color: #cfd7e0;
+  opacity: 1;
+}
+:-ms-input-placeholder {
+  color: #cfd7e0;
+}
+
+input:-webkit-autofill,
+select:-webkit-autofill {
+  -webkit-text-fill-color: #666ee8;
+  transition: background-color 100000000s;
+  -webkit-animation: 1ms void-animation-out 1s;
+}
+
+.StripeElement--webkit-autofill {
+  background: transparent !important;
+}
+
+#card-element {
+  margin-top: -1px;
+}
+
+#ideal-bank-element {
+  padding: 0;
+}
+
+button.payment {
+  margin-top: 10px;
+  display: block;
+  background: #666ee8;
+  color: #fff;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  border: 0;
+  font-weight: 700;
+  width: 100%;
+  height: 40px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+button:focus {
+  background: #555abf;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 7px 14px 0 rgba(50, 50, 93, 0.1),
+    0 3px 6px 0 rgba(0, 0, 0, 0.08);
+}
+
+button:active {
+  background: #43458b;
 }

@@ -1,8 +1,8 @@
-import React, { useEffect, useReducer } from 'react'
+import React, { useEffect } from 'react'
 import { addToCart, removeFromCart } from '../actions/cartActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
+// import { loadStripe } from '@stripe/stripe-js';
 
 function CartScreen(props) {
 
@@ -18,23 +18,23 @@ function CartScreen(props) {
       stripe: null,
     };
 
-    const formatPrice = ({ amount, currency, quantity }) => {
-      const numberFormat = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency,
-        currencyDisplay: 'symbol',
-      });
-      const parts = numberFormat.formatToParts(amount);
-      let zeroDecimalCurrency = true;
-      for (let part of parts) {
-        if (part.type === 'decimal') {
-          zeroDecimalCurrency = false;
-        }
-      }
-      amount = zeroDecimalCurrency ? amount : amount / 100;
-      const total = (quantity * amount).toFixed(2);
-      return numberFormat.format(total);
-    };
+    // const formatPrice = ({ amount, currency, quantity }) => {
+    //   const numberFormat = new Intl.NumberFormat('en-US', {
+    //     style: 'currency',
+    //     currency,
+    //     currencyDisplay: 'symbol',
+    //   });
+    //   const parts = numberFormat.formatToParts(amount);
+    //   let zeroDecimalCurrency = true;
+    //   for (let part of parts) {
+    //     if (part.type === 'decimal') {
+    //       zeroDecimalCurrency = false;
+    //     }
+    //   }
+    //   amount = zeroDecimalCurrency ? amount : amount / 100;
+    //   const total = (quantity * amount).toFixed(2);
+    //   return numberFormat.format(total);
+    // };
     
 
     const productId = props.match.params.id;
@@ -53,39 +53,39 @@ function CartScreen(props) {
       props.history.push("/details");
     }
     
-    const fetchCheckoutSession = async ({ quantity }) => {
-      return fetch('/create-checkout-session', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          quantity,
-        }),
-      }).then((res) => res.json());
-    };
+    // const fetchCheckoutSession = async ({ quantity }) => {
+    //   return fetch('/create-checkout-session', {
+    //     method: 'POST',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //     },
+    //     body: JSON.stringify({
+    //       quantity,
+    //     }),
+    //   }).then((res) => res.json());
+    // };
   
-    const handleClick = async (event) => {
-      const stripe = await loadStripe('pk_test_QWyqYoftE0qNtrsi62EozHql')
-      // Call your backend to create the Checkout session.
-      dispatch({ type: 'setLoading', payload: { loading: true } });
-      const { sessionId } = await fetchCheckoutSession({
-        quantity: state.quantity,
+    // const handleClick = async (event) => {
+    //   const stripe = await loadStripe('pk_test_QWyqYoftE0qNtrsi62EozHql')
+    //   // Call your backend to create the Checkout session.
+    //   dispatch({ type: 'setLoading', payload: { loading: true } });
+    //   const { sessionId } = await fetchCheckoutSession({
+    //     quantity: state.quantity,
         
-        // quantity: state.quantity,
-      });
-      // When the customer clicks on the button, redirect them to Checkout.
-      const { error } = await stripe.redirectToCheckout({
-        sessionId,
-      });
-      // If `redirectToCheckout` fails due to a browser or network
-      // error, display the localized error message to your customer
-      // using `error.message`.
-      if (error) {
-        dispatch({ type: 'setError', payload: { error } });
-        dispatch({ type: 'setLoading', payload: { loading: false } });
-      }
-    };
+    //     // quantity: state.quantity,
+    //   });
+    //   // When the customer clicks on the button, redirect them to Checkout.
+    //   const { error } = await stripe.redirectToCheckout({
+    //     sessionId,
+    //   });
+    //   // If `redirectToCheckout` fails due to a browser or network
+    //   // error, display the localized error message to your customer
+    //   // using `error.message`.
+    //   if (error) {
+    //     dispatch({ type: 'setError', payload: { error } });
+    //     dispatch({ type: 'setLoading', payload: { loading: false } });
+    //   }
+    // };
 
 
     return <div className="cart">
@@ -119,13 +119,14 @@ function CartScreen(props) {
                     </div>
                     <div>
                       Qty:
-                    <select value={item.qty} onChange={(e) => dispatch(addToCart(item.product, e.target.value))}>
+                    <select value={item.qty} onChange={(e) => dispatch(addToCart(item.product, parseInt(e.target.value)))}>
                         {[...Array(item.countInStock).keys()].map(x =>
                           <option key={x + 1} value={x + 1}>{x + 1}</option>
                         )}
                       </select>
-                      <button type="button" className="button" onClick={() => removeFromCartHandler(item.product)} >
-                        Delete
+            
+                      <button type="button" className="delete-button" onClick={() => removeFromCartHandler(item.product)} >
+                       Delete
                       </button>
                     </div>
                   </div>

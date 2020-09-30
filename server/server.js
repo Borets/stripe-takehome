@@ -1,30 +1,34 @@
 import express from 'express'; 
 import data from './data'; 
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser'
 
 
 const { resolve } = require('path');
 
 const app = express(); 
 
-const dotvalues = dotenv.config('./.env');
+const config = dotenv.config()
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 
-const calculateOrderAmount = items => {
-  // Replace this constant with a calculation of the order's amount
-  // Calculate the order total on the server to prevent
-  // people from directly manipulating the amount on the client
-  return 1400;
-};
+function calculateOrderAmount (cart) {
+  const cartvalue = cart.reduce((a, c) => a + c.price * c.qty, 0) 
+  return cartvalue * 100
+}
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
 
 
 app.post("/create-payment-intent", async (req, res) => {
-  // const { items, currency } = req.body;
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount(),
+    amount: calculateOrderAmount (JSON.parse(JSON.stringify(req.body.cart))),
     currency: 'usd',
     metadata: {integration_check: 'accept_a_payment'},
   });
