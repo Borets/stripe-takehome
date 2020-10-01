@@ -41,17 +41,17 @@ app.post("/create-payment-intent", async (req, res) => {
   });
 });
 
-app.post("/payment-success", async (req, res) => {
+// app.post("/payment-success", async (req, res) => {
   
-  const orderdata = JSON.stringify(req.body).replace(/[{}]/g, '');
-    fs.appendFile('server/public/SuccessfulOrders.log', orderdata+'\r\n', (err) => {
-      if (err) throw err;
-      console.log('The "data to append" was appended to file!');
-    })
+//   const orderdata = JSON.stringify(req.body).replace(/[{}]/g, '');
+//     fs.appendFile('server/public/SuccessfulOrders.log', orderdata+'\r\n', (err) => {
+//       if (err) throw err;
+//       console.log('The "data to append" was appended to file!');
+//     })
 
-  res.send("Success!")
+//   res.send("Success!")
   
-  }); 
+//   }); 
 
 app.get("/api/products/:id", (req, res) => {
     const productId = req.params.id;
@@ -90,7 +90,7 @@ app.get('/config', async (req, res) => {
 // });
 
 
-
+// Requests to support stripe checkout 
 
 // app.post('/create-checkout-session', async (req, res) => {
 //   const domainURL = process.env.DOMAIN;
@@ -141,10 +141,7 @@ function AppendToLogFile (data){
   })
 }
 
-
-
 app.post('/webhook', bodyParser.raw({type: 'application/json'}), (request, response) => {
-
 
   // Handle the event
   switch (request.body.type) {
