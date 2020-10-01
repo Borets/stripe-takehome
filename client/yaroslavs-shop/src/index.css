@@ -333,7 +333,7 @@ div.payment
 {
   
   max-width: 480px;
-  margin: 10% auto;
+  margin: 5% auto;
   padding:  30px 30px;
   border-radius: 4px;
   align-items: center;
@@ -349,6 +349,11 @@ h2 {
   letter-spacing: 0.3px;
   font-size: 1.5rem;
   font-weight: 500;
+}
+
+.error{ 
+  color: #fa755a;
+  font-weight: bolder;
 }
 
 fieldset {

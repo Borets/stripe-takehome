@@ -10,7 +10,7 @@ This is take home from stripe that is currently in progress.
 - [X] Fix the reason as to why I'm not able to create a payment intel on the server and pass secret succesfully to the client
 - [X] Expand the payment form to capture user personal details (first, last name, shipping address) as well as card details
 - [ ] Make sure that my payment form accounts for edge cases and is able to redirect to failures, success states. 
-- [ ] Store all of the succesfull order details in a log file somewhere
+- [X] Store all of the succesfull order details in a log file somewhere
 - [X] Make sure the form is able to pass the tests on Stripes Doc
 - [ ] Create the friction log
 

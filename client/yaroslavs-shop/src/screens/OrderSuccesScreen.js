@@ -12,7 +12,7 @@ function OrderSuccessScreen(props) {
   
             <div className="orderSucess">  
               <h1>Order Successful!</h1>
-              <h3>Your pins will be arriving shortly! </h3>
+              <h3>We recieved your payment and pins will be arriving shortly! </h3>
               <p>Order ID {ClientSecret}</p>
               <p>Follow the link below to be redirected to a log file with a full history</p>
               <div className="past-orders-link"> 

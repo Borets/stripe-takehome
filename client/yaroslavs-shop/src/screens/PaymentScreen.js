@@ -7,10 +7,6 @@ function PaymentScreen(props) {
   const stripe = useStripe();
   const elements = useElements();
 
-  const cart = useSelector(state => state.cart);
-  const { cartItems } = cart;
-  const carttotal = cartItems.reduce((a, c) => a + c.price * c.qty, 0)
-
   const CARD_ELEMENT_OPTIONS = {
     style: {
       base: {
@@ -29,11 +25,17 @@ function PaymentScreen(props) {
     },
   };
 
+  const cart = useSelector(state => state.cart);
+  const { cartItems } = cart;
+  const carttotal = cartItems.reduce((a, c) => a + c.price * c.qty, 0)
+
+  
   const orderData = {
     amount: carttotal, 
     currency: "usd", 
     cart: cartItems
    };
+  
 
   const nameForm = useRef(null)
  
@@ -116,9 +118,9 @@ function PaymentScreen(props) {
 
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
-      console.log(result.error.message);
-      if (result.error.decline_code === 'insufficient_funds') {
-      }
+      this.setState({errorMessage: result.error.message})
+      // if (result.error.decline_code === 'insufficient_funds') {
+      // }
 
     } else {
       // The payment has been processed!
@@ -173,6 +175,7 @@ function PaymentScreen(props) {
           </fieldset>
         </section>
         <section>
+        {/* <h2 className="error">Payment Error - </h2> */}
         <h2>Payment Information</h2>
         <fieldset className="with-state">
     
