@@ -61,12 +61,13 @@ function PaymentScreen(props) {
   const SubmitOrderSuccess = async (result) => {
     
     const MsgBody = {
-        id: result.id,
-        date: result.created,
-        amount: result.amount, 
-        client_secret: result.client_secret, 
-        status: result.status, 
-        receipt_email: result.receipt_email
+        date: new Date(result.created*1000).toLocaleString(),
+        order_id: result.id,
+        name: result.shipping.name,
+        amount: (result.amount/100).toFixed(2), 
+        receipt_email: result.receipt_email, 
+        payment_status: result.status, 
+        status: "to be fulfilled"
     } 
 
     return await fetch('/payment-success', {

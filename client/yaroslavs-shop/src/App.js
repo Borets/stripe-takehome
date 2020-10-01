@@ -34,31 +34,17 @@ function App() {
             </div>
                 <div className="header-links">
                     <a href="/cart">Cart</a> 
-                    <a href="/orderhistory">Past Orders</a> 
+                    <a href="http://localhost:5000/Successfulorders.log">Past Orders</a> 
                 </div>
             </header>
-            <aside className="sidebar">
-                <h3>Shopping Categories</h3>
-                {/* <button className="sidebar-close-button" onClick={closeMenu}>x</button> */}
-                <ul>
-                    <li>
-                        <a href="index.html">Pins</a>
-                    </li>
-                    <li>
-                        <a href="index.html">Not Pins</a>
-                    </li>
-                    <li>
-                      
-                    </li>
-                </ul>
-            </aside>
+        
             <main className="main">
                 <div className="content">
                   <Route path="/" exact={true} component={HomeScreen} /> 
                   <Route path="/cart/:id?" component={CartScreen} />
                   <Route path="/product/:id" component={ProductScreen} />
                   <Route path="/details" component={PaymentScreen} />
-                <Route path="/ordersuccess/:clientsecret" component={OrderSuccessScreen} />
+                  <Route path="/ordersuccess/:clientsecret" component={OrderSuccessScreen} />
                 </div>
             </main>
       <footer className="footer">
