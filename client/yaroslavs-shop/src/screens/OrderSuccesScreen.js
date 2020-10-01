@@ -6,10 +6,6 @@ function OrderSuccessScreen(props) {
   const ClientSecret = props.match.params.clientsecret
 
   return <div>
-            <div className="back-to-result"> 
-              <Link to="/">Take Me Home</Link>
-            </div>
-  
             <div className="orderSucess">  
               <h1>Order Successful!</h1>
               <h3>We recieved your payment and pins will be arriving shortly! </h3>
@@ -18,13 +14,7 @@ function OrderSuccessScreen(props) {
               <div className="past-orders-link"> 
                   <a href="http://localhost:5000/Successfulorders.log">View Past Orders</a>
               </div>
-            
-
             </div>    
-            
-            
-
-         
          </div>
   }
   

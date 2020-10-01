@@ -62,24 +62,29 @@ function PaymentScreen(props) {
 
   const SubmitOrderSuccess = async (result) => {
     
-    const MsgBody = {
-        date: new Date(result.created*1000).toLocaleString(),
-        order_id: result.id,
-        name: result.shipping.name,
-        amount: (result.amount/100).toFixed(2), 
-        receipt_email: result.receipt_email, 
-        payment_status: result.status, 
-        status: "to be fulfilled"
-    } 
 
-    return await fetch('/payment-success', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(MsgBody)
+    props.history.push("/ordersuccess/"+result.id)
     
-     }).then(props.history.push("/ordersuccess/"+result.id));
+    // Content Used 
+    //const MsgBody = {
+    //     payment_type: "Synchronous",
+    //     date: new Date(result.created*1000).toLocaleString(),
+    //     order_id: result.id,
+    //     name: result.shipping.name,
+    //     amount: (result.amount/100).toFixed(2), 
+    //     receipt_email: result.receipt_email, 
+    //     payment_status: result.status, 
+    //     status: "to be fulfilled"
+    // } 
+
+    // return await fetch('/payment-success', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(MsgBody)
+    
+    //  }).then(props.history.push("/ordersuccess/"+result.id));
 
  }
 
@@ -118,7 +123,9 @@ function PaymentScreen(props) {
 
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
-      this.setState({errorMessage: result.error.message})
+      
+      console.log(result.error.decline_code)
+      
       // if (result.error.decline_code === 'insufficient_funds') {
       // }
 

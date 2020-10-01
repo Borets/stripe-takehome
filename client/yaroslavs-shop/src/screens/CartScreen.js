@@ -17,24 +17,6 @@ function CartScreen(props) {
       error: null,
       stripe: null,
     };
-
-    // const formatPrice = ({ amount, currency, quantity }) => {
-    //   const numberFormat = new Intl.NumberFormat('en-US', {
-    //     style: 'currency',
-    //     currency,
-    //     currencyDisplay: 'symbol',
-    //   });
-    //   const parts = numberFormat.formatToParts(amount);
-    //   let zeroDecimalCurrency = true;
-    //   for (let part of parts) {
-    //     if (part.type === 'decimal') {
-    //       zeroDecimalCurrency = false;
-    //     }
-    //   }
-    //   amount = zeroDecimalCurrency ? amount : amount / 100;
-    //   const total = (quantity * amount).toFixed(2);
-    //   return numberFormat.format(total);
-    // };
     
 
     const productId = props.match.params.id;
@@ -53,40 +35,6 @@ function CartScreen(props) {
       props.history.push("/details");
     }
     
-    // const fetchCheckoutSession = async ({ quantity }) => {
-    //   return fetch('/create-checkout-session', {
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       quantity,
-    //     }),
-    //   }).then((res) => res.json());
-    // };
-  
-    // const handleClick = async (event) => {
-    //   const stripe = await loadStripe('pk_test_QWyqYoftE0qNtrsi62EozHql')
-    //   // Call your backend to create the Checkout session.
-    //   dispatch({ type: 'setLoading', payload: { loading: true } });
-    //   const { sessionId } = await fetchCheckoutSession({
-    //     quantity: state.quantity,
-        
-    //     // quantity: state.quantity,
-    //   });
-    //   // When the customer clicks on the button, redirect them to Checkout.
-    //   const { error } = await stripe.redirectToCheckout({
-    //     sessionId,
-    //   });
-    //   // If `redirectToCheckout` fails due to a browser or network
-    //   // error, display the localized error message to your customer
-    //   // using `error.message`.
-    //   if (error) {
-    //     dispatch({ type: 'setError', payload: { error } });
-    //     dispatch({ type: 'setLoading', payload: { loading: false } });
-    //   }
-    // };
-
 
     return <div className="cart">
       <div className="cart-list">
