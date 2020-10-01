@@ -1,8 +1,8 @@
 import express from 'express'; 
 import data from './data'; 
 import dotenv from 'dotenv';
-import bodyParser from 'body-parser'
-
+import bodyParser from 'body-parser';
+import fs from 'fs';
 
 const { resolve } = require('path');
 
@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
+app.use(express.static(__dirname + '/public'));
 
 app.post("/create-payment-intent", async (req, res) => {
   // Create a PaymentIntent with the order amount and currency
@@ -41,17 +42,18 @@ app.post("/create-payment-intent", async (req, res) => {
 });
 
 
+
 app.post("/payment-success", async (req, res) => {
   
-  console.log(req.body)
+  const data = JSON.stringify(req.body);
 
-  const WriteToFile = { 
-    
-  }
-
+  fs.writeFile('/public/SuccessfulOrders.log', data, (err) => {
+    if (err) {
+        throw err;
+    }
   res.send("Success!")
-
-});
+  })
+}); 
 
 
 app.get("/api/products/:id", (req, res) => {
