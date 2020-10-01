@@ -62,6 +62,7 @@ function PaymentScreen(props) {
     
     const MsgBody = {
         id: result.id,
+        date: result.created,
         amount: result.amount, 
         client_secret: result.client_secret, 
         status: result.status, 

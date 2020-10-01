@@ -8,6 +8,8 @@ const { resolve } = require('path');
 
 const app = express(); 
 
+app.use(express.static('server/public'));
+ 
 const config = dotenv.config()
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
@@ -24,8 +26,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.use(express.static(__dirname + '/public'));
-
 app.post("/create-payment-intent", async (req, res) => {
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
@@ -41,20 +41,17 @@ app.post("/create-payment-intent", async (req, res) => {
   });
 });
 
-
-
 app.post("/payment-success", async (req, res) => {
   
-  const data = JSON.stringify(req.body);
+  const orderdata = JSON.stringify(req.body).replace(/[{}]/g, '');
+    fs.appendFile('server/public/SuccessfulOrders.log', orderdata+'\r\n', (err) => {
+      if (err) throw err;
+      console.log('The "data to append" was appended to file!');
+    })
 
-  fs.writeFile('/public/SuccessfulOrders.log', data, (err) => {
-    if (err) {
-        throw err;
-    }
   res.send("Success!")
-  })
-}); 
-
+  
+  }); 
 
 app.get("/api/products/:id", (req, res) => {
     const productId = req.params.id;
