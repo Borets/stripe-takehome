@@ -58,7 +58,7 @@ function App() {
                   <Route path="/cart/:id?" component={CartScreen} />
                   <Route path="/product/:id" component={ProductScreen} />
                   <Route path="/details" component={PaymentScreen} />
-                  <Route path="/ordersuccess/:orderid?" component={OrderSuccessScreen} />
+                <Route path="/ordersuccess/:clientsecret" component={OrderSuccessScreen} />
                 </div>
             </main>
       <footer className="footer">

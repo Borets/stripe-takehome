@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useSelector } from 'react-redux';
 import {useStripe, useElements, CardElement} from '@stripe/react-stripe-js';
 
@@ -8,12 +8,9 @@ function PaymentScreen(props) {
   const elements = useElements();
 
   const cart = useSelector(state => state.cart);
-  
   const { cartItems } = cart;
-
   const carttotal = cartItems.reduce((a, c) => a + c.price * c.qty, 0)
 
- 
   const CARD_ELEMENT_OPTIONS = {
     style: {
       base: {
@@ -37,6 +34,8 @@ function PaymentScreen(props) {
     currency: "usd", 
     cart: cartItems
    };
+
+  const nameForm = useRef(null)
  
   const fetchPaymentIntent = async (orderData) => {
   
@@ -59,6 +58,27 @@ function PaymentScreen(props) {
     return payintent.clientSecret
   }
 
+  const SubmitOrderSuccess = async (result) => {
+    
+    const MsgBody = {
+        id: result.id,
+        amount: result.amount, 
+        client_secret: result.client_secret, 
+        status: result.status, 
+        receipt_email: result.receipt_email
+    } 
+
+    return await fetch('/payment-success', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(MsgBody)
+    
+     }).then(props.history.push("/ordersuccess/"+result.id));
+
+ }
+
   const handleSubmit = async (event) => {
     // We don't want to let default form submission happen here,
     // which would refresh the page.
@@ -70,23 +90,27 @@ function PaymentScreen(props) {
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
-    
+    const form = nameForm.current
+
     const result = await stripe.confirmCardPayment(await clientsecret(), {
-      receipt_email: "test@email.com",
+      receipt_email: form['email'].value,
       shipping: {
         address: {
-          line1: "123 Market St",
-          city:  "San Francisco"
+          line1: form['address'].value,
+          city:  form['city'].value,
+          state: form['state'].value,
+          postal_code: form['postal_code'].value
         },
-        name: "Jenny Rosen"
+        name: form['name'].value
       },
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
-          name: 'Jenny Rosen',
+          name: form['name'].value,
         },
       }
     });
+
 
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
@@ -102,7 +126,9 @@ function PaymentScreen(props) {
         // execution. Set up a webhook or plugin to listen for the
         // payment_intent.succeeded event that handles any business critical
         // post-payment actions.
-        props.history.push("/ordersuccess");
+        console.log("Submitted Payment Intent")
+        await SubmitOrderSuccess(result.paymentIntent);
+        
       } 
     }
   };
@@ -110,7 +136,7 @@ function PaymentScreen(props) {
 
   return ( <div className = "payment">
     
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} ref={nameForm}>
     <section>
           <h2>Shipping &amp; Billing Information</h2>
           <fieldset className="with-state">

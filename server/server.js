@@ -41,6 +41,19 @@ app.post("/create-payment-intent", async (req, res) => {
 });
 
 
+app.post("/payment-success", async (req, res) => {
+  
+  console.log(req.body)
+
+  const WriteToFile = { 
+    
+  }
+
+  res.send("Success!")
+
+});
+
+
 app.get("/api/products/:id", (req, res) => {
     const productId = req.params.id;
     const product = data.products.find(x => x._id === productId);
