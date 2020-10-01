@@ -31,7 +31,10 @@ app.post("/create-payment-intent", async (req, res) => {
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount (JSON.parse(JSON.stringify(req.body.cart))),
     currency: 'usd',
-    metadata: {integration_check: 'accept_a_payment'},
+    metadata: {
+      integration_check: 'accept_a_payment',
+      order: JSON.stringify(req.body.cart)
+    },
   });
 
   // Send publishable key and PaymentIntent details to client

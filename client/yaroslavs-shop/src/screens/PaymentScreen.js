@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { useSelector } from 'react-redux';
 import {useStripe, useElements, CardElement} from '@stripe/react-stripe-js';
 
@@ -25,11 +25,20 @@ function PaymentScreen(props) {
     },
   };
 
+  /// Cart Total Calculations 
   const cart = useSelector(state => state.cart);
   const { cartItems } = cart;
   const carttotal = cartItems.reduce((a, c) => a + c.price * c.qty, 0)
 
-  
+  // Error handling logic
+  const [error, setError] = useState(undefined);
+
+  const errorDiv = error 
+  ? <div className="error">
+      <h2 className="error">Payment Error - {error}</h2>
+    </div> 
+  : '';
+
   const orderData = {
     amount: carttotal, 
     currency: "usd", 
@@ -39,6 +48,8 @@ function PaymentScreen(props) {
 
   const nameForm = useRef(null)
  
+  // Getting the payment intent from the server
+
   const fetchPaymentIntent = async (orderData) => {
   
     console.log("Order Data is")
@@ -61,8 +72,7 @@ function PaymentScreen(props) {
   }
 
   const SubmitOrderSuccess = async (result) => {
-    
-
+  
     props.history.push("/ordersuccess/"+result.id)
     
     // Content Used 
@@ -94,9 +104,6 @@ function PaymentScreen(props) {
     event.preventDefault();
 
     if (!stripe || !elements) {
-
-    // Stripe.js has not yet loaded.
-      // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
     const form = nameForm.current
@@ -123,8 +130,9 @@ function PaymentScreen(props) {
 
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
-      
-      console.log(result.error.decline_code)
+        console.log(result.error)
+        setError(result.error.message)
+        
       
       // if (result.error.decline_code === 'insufficient_funds') {
       // }
@@ -182,8 +190,9 @@ function PaymentScreen(props) {
           </fieldset>
         </section>
         <section>
-        {/* <h2 className="error">Payment Error - </h2> */}
+        {errorDiv}
         <h2>Payment Information</h2>
+        
         <fieldset className="with-state">
     
       <label className="credit-card">Credit Card </label>
