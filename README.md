@@ -58,5 +58,4 @@ Zip: Any
 4. Navigate to the link below or click `Past Orders` access the log of succesfull payments
 ```
 http://localhost:5000/Successfulorders.log
-
 ```
