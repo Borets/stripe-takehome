@@ -1,4 +1,4 @@
-## stripe-take-home-exercise 
+# stripe-take-home-exercise 
 The repo contains references on how run the create app as well as descriptions for how to access the log with details of successful payments collected asynchronously 
 
 ## How to run the app locally
