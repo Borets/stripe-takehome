@@ -10,14 +10,23 @@ $ git clone git@github.com:/Borets/stripe-takehome.git
 $ cd stripe-takehome
 ```
 
-### 2. Run Backend
+### 2. Update .evn variales
+
+Replace  STRIPE_PUBLISHABLE_KEY & STRIPE_SECRET_KEY in the .evn file with keys that are associated with your acccount 
+
+```
+STRIPE_PUBLISHABLE_KEY=[Publishable Key]
+STRIPE_SECRET_KEY=[Secret Key]
+```
+
+### 3. Run Backend
 
 ```
 $ npm install
 $ npm start
 ```
 
-### 3. Run Frontend
+### 4. Run Frontend
 
 ```
 # open new terminal
