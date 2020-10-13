@@ -1,10 +1,10 @@
 import React from 'react';
 import {BrowserRouter, Route, Link} from 'react-router-dom';
-import HomeScreen from './screens/HomeScreen';
-import PaymentScreen from './screens/PaymentScreen';
-import ProductScreen from './screens/ProductScreen';
-import OrderSuccessScreen from './screens/OrderSuccesScreen'
-import CartScreen from './screens/CartScreen';
+import HomeScreen from './Screens/HomeScreen';
+import PaymentScreen from './Screens/PaymentScreen';
+import ProductScreen from './Screens/ProductScreen';
+import OrderSuccessScreen from './Screens/OrderSuccesScreen'
+import CartScreen from './Screens/CartScreen';
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import './App.css';
